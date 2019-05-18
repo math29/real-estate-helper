@@ -157,6 +157,10 @@ Les paramètres sont donc :
    
 Les paramètres restants de chaque service peuvent être facilement obtenus à partir processus d'ingénierie inversée.
    
+## Building docker image
+docker build -f Dockerfile -t scrapper-real-estate .
+docker run -it scrapper-real-estate sh
+
 
 ## Déploiement sur un Raspberry Pi
 _Testé sur un Raspberry Pi sous Raspbian Jessie._

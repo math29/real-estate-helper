@@ -36,7 +36,7 @@ def search(parameters):
         for photo in annonceNode.find("photos"):
             photos.append(photo.findtext("stdUrl"))
 
-        annonce, created = Annonce.create_or_get(
+        annonce, created = Annonce.get_or_create(
             id='seloger-' + annonceNode.find('idAnnonce').text,
             site='SeLoger',
             # SeLoger peut ne pas fournir de titre pour une annonce T_T
@@ -50,8 +50,8 @@ def search(parameters):
             rooms=annonceNode.find('nbPiece').text,
             bedrooms=annonceNode.find('nbChambre').text,
             city=annonceNode.findtext('ville'),
-            link=annonceNode.findtext('permaLien'),
-            picture=photos
+            link=annonceNode.findtext('permaLien')
+            # pictures=photos
         )
 
         if created:

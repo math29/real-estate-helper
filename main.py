@@ -9,7 +9,6 @@ from scrapping_modules import seloger
 from scrapping_modules import leboncoin
 from scrapping_modules import pap
 
-
 logging.basicConfig(level=logging.INFO)
 
 os.chdir(os.path.dirname(sys.argv[0]))
@@ -21,7 +20,7 @@ with open("parameters.json", encoding='utf-8') as parameters_data:
     parameters = json.load(parameters_data)
 
 # Recherche et insertion en base
-if "logic_immo" in parameters['ad-providers']:
+if "logic-immo" in parameters['ad-providers']:
     logging.info("Retrieving from logic_immo")
     logic_immo.search(parameters)
 

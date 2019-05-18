@@ -20,12 +20,20 @@ class Annonce(Model):
     bedrooms = IntegerField(null=True)
     city = CharField()
     link = CharField()
-    picture = CharField(null=True)
     posted2trello = BooleanField(default=False)
 
     class Meta:
         database = db
         order_by = ('-created',)
+
+
+# class Picture(Model):
+#     url = CharField()
+#     annonce = ForeignKeyField(Annonce, backref='pictures', lazy_load=False)
+#
+#     class Meta:
+#         database = db
+#         order_by = ('-created',)
 
 
 def create_tables():

@@ -33,40 +33,41 @@ def search(parameters):
                             data=token)
     data = request.json()
 
-    for ad in data['ads']:
-        _payload = {'ad_id': ad['list_id']}
-        _request = requests.post("https://mobile.leboncoin.fr/templates/api/view.json", params=_payload, headers=header,
-                                 data=token)
+    if data['ads'] != None:
+        for ad in data['ads']:
+            _payload = {'ad_id': ad['list_id']}
+            _request = requests.post("https://mobile.leboncoin.fr/templates/api/view.json", params=_payload, headers=header,
+                                     data=token)
 
-        _data = _request.json()
+            _data = _request.json()
 
-        rooms, surface = 0, 0
+            rooms, surface = 0, 0
 
-        for param in _data.get('parameters'):
-            if param['id'] == 'rooms':
-                rooms = param['value']
-            if param['id'] == 'square':
-                surface = param['value'].replace(" m²", "")
+            for param in _data.get('parameters'):
+                if param['id'] == 'rooms':
+                    rooms = param['value']
+                if param['id'] == 'square':
+                    surface = param['value'].replace(" m²", "")
 
-        annonce, created = Annonce.get_or_create(
-            id='lbc-' + _data.get('list_id'),
-            defaults={
-                'site': "Leboncoin Pro" if ad['company_ad'] == 1 else "Leboncoin Particulier",
-                'created': datetime.strptime(_data.get('formatted_date'), "%d/%m/%Y &agrave; %Hh%M"),
-                'title': BeautifulSoup(_data.get('subject'), "lxml").text,
-                'description': BeautifulSoup(_data.get('body').replace("<br />", "\n"), "lxml").text,
-                'telephone': _data.get("phone"),
-                'price': _data.get('price').replace(" ", ""),
-                'surface': surface,
-                'rooms': rooms,
-                'city': _data.get('zipcode'),
-                'link': "https://www.leboncoin.fr/locations/%s.htm?ca=12_s" % _data.get('list_id'),
-                'picture': _data.get('images')
-            }
-        )
+            annonce, created = Annonce.get_or_create(
+                id='lbc-' + _data.get('list_id'),
+                defaults={
+                    'site': "Leboncoin Pro" if ad['company_ad'] == 1 else "Leboncoin Particulier",
+                    'created': datetime.strptime(_data.get('formatted_date'), "%d/%m/%Y &agrave; %Hh%M"),
+                    'title': BeautifulSoup(_data.get('subject'), "lxml").text,
+                    'description': BeautifulSoup(_data.get('body').replace("<br />", "\n"), "lxml").text,
+                    'telephone': _data.get("phone"),
+                    'price': _data.get('price').replace(" ", ""),
+                    'surface': surface,
+                    'rooms': rooms,
+                    'city': _data.get('zipcode'),
+                    'link': "https://www.leboncoin.fr/locations/%s.htm?ca=12_s" % _data.get('list_id')
+                    # 'pictures': _data.get('images')
+                }
+            )
 
-        if created:
-            annonce.save()
+            if created:
+                annonce.save()
 
 
 def surface_value(surface):
