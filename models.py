@@ -27,15 +27,15 @@ class Annonce(Model):
         order_by = ('-created',)
 
 
-# class Picture(Model):
-#     url = CharField()
-#     annonce = ForeignKeyField(Annonce, backref='pictures', lazy_load=False)
-#
-#     class Meta:
-#         database = db
-#         order_by = ('-created',)
+class Picture(Model):
+    url = CharField()
+    annonce = ForeignKeyField(Annonce, backref='pictures')
+
+    class Meta:
+        database = db
+        order_by = ('-created',)
 
 
 def create_tables():
     with db:
-        db.create_tables([Annonce])
+        db.create_tables([Annonce, Picture])

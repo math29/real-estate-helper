@@ -1,6 +1,6 @@
 import requests
 import xml.etree.ElementTree as ET
-from models import Annonce
+from models import Annonce, Picture
 from datetime import datetime
 '''Module qui récupère les annonces de SeLoger.com'''
 
@@ -8,8 +8,10 @@ from datetime import datetime
 def search(parameters):
     # Préparation des paramètres de la requête
     payload = {
-        'px_loyermin': parameters['price'][0],
-        'px_loyermax': parameters['price'][1],
+        'px_loyermin': parameters['price'][0] if parameters['seloger']['idtt'] == 1 else None,
+        'px_loyermax': parameters['price'][1] if parameters['seloger']['idtt'] == 1 else None,
+        'pxmin': parameters['price'][0] if parameters['seloger']['idtt'] == 2 else None,
+        'pxmax': parameters['price'][1] if parameters['seloger']['idtt'] == 2 else None,
         'surfacemin': parameters['surface'][0],
         'surfacemax': parameters['surface'][1],
         # Si parameters['rooms'] = (2, 4) => "2,3,4"
@@ -51,8 +53,9 @@ def search(parameters):
             bedrooms=annonceNode.find('nbChambre').text,
             city=annonceNode.findtext('ville'),
             link=annonceNode.findtext('permaLien')
-            # pictures=photos
         )
 
         if created:
+            for photo in photos:
+                Picture.create(url=photo, annonce=annonce)
             annonce.save()

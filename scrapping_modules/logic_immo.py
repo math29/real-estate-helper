@@ -3,7 +3,7 @@ from pprint import pprint
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
-from models import Annonce
+from models import Annonce, Picture
 
 """Module qui récupère les annonces de Logic-Immo"""
 
@@ -46,11 +46,13 @@ def search(parameters):
             bedrooms=ad['properties'].get('bedrooms'),
             city=ad['location']['city']['name'],
             link=ad['info']['link']
-            # pictures=[picture.replace("[WIDTH]", "1440").replace("[HEIGHT]", "956").replace("[SCALE]", "3.5")
-                     # for picture in ad.get('pictures')]
         )
 
         if created:
+            pictures = [picture.replace("[WIDTH]", "1440").replace("[HEIGHT]", "956").replace("[SCALE]", "3.5")
+                        for picture in ad.get('pictures')]
+            for picture in pictures:
+                Picture.create(url=picture, annonce=annonce)
             annonce.save()
 
 

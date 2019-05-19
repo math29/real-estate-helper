@@ -58,13 +58,10 @@ def post():
         card = get_list(annonce.site).add_card(title, desc=description)
 
         # On s'assure que ce soit bien un tableau
-        # if annonce.pictures is not None:
-        #     # Conversion de la chaîne de caractère représentant le tableau d'images en tableau
-        #     for picture in annonce.pictures:
-        #         card.attach(url=picture.url)
-            # Il n'y a qu'une photo
-        # elif annonce.picture is not None and annonce.picture.startswith("http"):
-        #     card.attach(url=annonce.picture)
+        if annonce.pictures is not None:
+            # Conversion de la chaîne de caractère représentant le tableau d'images en tableau
+            for picture in annonce.pictures:
+                card.attach(url=picture.url, name=annonce.title)
 
         card.attach(url=annonce.link)
 

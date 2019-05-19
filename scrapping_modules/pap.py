@@ -1,7 +1,7 @@
 import requests
 from urllib.parse import unquote, urlencode
 from datetime import datetime
-from models import Annonce
+from models import Annonce, Picture
 
 """Module qui récupère les annonces de PAP"""
 
@@ -65,6 +65,8 @@ def search(parameters):
             )
 
             if created:
+                for photo in photos:
+                    Picture.create(url=photo, annonce=annonce)
                 annonce.save()
 
 

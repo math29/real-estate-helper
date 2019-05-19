@@ -1,5 +1,5 @@
 # \#UnToitPourCaramel
-_Un programme inspiré par [VikParuchuri/apartment-finder](https://github.com/VikParuchuri/apartment-finder) 
+_Un programme inspiré par [axeleroy/untoitpourcaramel](https://github.com/axeleroy/untoitpourcaramel) 
 qui récupère les annonces immoblières de Leboncoin, Logic Immo, PaP et SeLoger pour les aggréger dans un tableau Trello._
 
 ## Pré-requis
